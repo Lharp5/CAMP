@@ -46,6 +46,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+#python virtual environment
+*/virtualenvironment
 
 #IDE specific files
 .idea
