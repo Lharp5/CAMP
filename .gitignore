@@ -46,6 +46,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+#databases
+db.sq*
+
+#python binary files
+*.pyc
+
 #python virtual environment
 */virtualenvironment
 
