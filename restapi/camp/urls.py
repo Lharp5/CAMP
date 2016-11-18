@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 from campAPI import views
+from rest_framework_jwt.views import obtain_jwt_token
 
 
 router = routers.DefaultRouter()
@@ -24,20 +25,24 @@ router.register(r'users', views.CampUserViewSet)
 router.register(r'campers', views.CamperViewSet)
 router.register(r'counsellors', views.CounsellorViewSet)
 router.register(r'administrators', views.AdministratorsViewSet)
-#router.register(r'groups/(?P<id>[0-9]+)/$', views.GroupViewSet)
 
 group_detail = views.GroupViewSet.as_view({
-    'get': 'retrieve',
-    'put': 'update',
+   'get': 'retrieve',
+   'post': 'create',
+   'put': 'update',
+   'delete': 'destroy',
+
+})
+
+membership_delete = views.MembershipViewSet.as_view({
     'delete': 'destroy',
-    'post': 'create',
 })
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-    url(r'^groups/$', views.GroupList.as_view()),
-    url(r'^groups/(?P<pk>[0-9]+)/$', group_detail),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
+    url(r'^groups/$', views.GroupList.as_view(), name='groups'),
+    url(r'^groups/(?P<pk>[0-9]+)/$', group_detail, name='group-details'),
+    url(r'^groups/(?P<pk>[0-9]+)/(?P<userid>[0-9]+)/$', membership_delete, name='group-details'),
+    url(r'^api-token-auth/$', obtain_jwt_token),
 ]

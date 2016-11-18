@@ -1,20 +1,39 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from models import CampUser
+from models import CampUser, Membership, CampGroup
 
 
-class GroupSerializer(serializers.ModelSerializer):
+class CampGroupSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(allow_blank=True)
+
     class Meta:
-        model = Group
+        model = CampGroup
+        fields = ('id', 'name', 'description')
+
+
+class MembershipUserSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source='member.user.first_name')
+    last_name = serializers.CharField(source='member.user.last_name')
+
+    class Meta:
+        model = Membership
+        fields = ('id', 'first_name', 'last_name')
+
+
+class MembershipGroupSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='group.id')
+    name = serializers.CharField(source='group.name')
+
+    class Meta:
+        model = Membership
         fields = ('id', 'name')
 
 
 class UserSerializer(serializers.ModelSerializer):
-    groups = GroupSerializer(many=True)
     class Meta:
         model = User
-        fields = ('username', 'email', 'groups')
+        fields = ('username', 'email')
 
 
 class CampUserSerializer(serializers.ModelSerializer):
@@ -23,11 +42,10 @@ class CampUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
     email = serializers.CharField(source="user.email")
     password = serializers.CharField(source="user.password")
-    groups = GroupSerializer(many=True, source="user.groups")
 
     class Meta:
         model = CampUser
-        fields = ('id', 'first_name', 'last_name', 'username', 'password', 'email', 'role', 'groups')
+        fields = ('id', 'first_name', 'last_name', 'username', 'password', 'email', 'role')
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
