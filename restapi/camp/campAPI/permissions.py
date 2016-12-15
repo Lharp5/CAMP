@@ -68,8 +68,11 @@ class CampGroupPermission(permissions.BasePermission):
         membership = Membership.objects.filter(member=user, group=obj)
         if user.role == CampUser.ADMINISTRATOR:
             return True
-        elif membership and request.method in permissions.SAFE_METHODS:
-            return True
+        elif membership:
+            if user.role == CampUser.COUNSELLOR and request.method in ['PUT', 'PATCH']:
+                return True
+            if request.method in permissions.SAFE_METHODS:
+                return True
 
         return False
 

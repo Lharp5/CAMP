@@ -41,6 +41,7 @@ membership_delete = views.MembershipViewSet.as_view({
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    url(r'^self/$', views.SelfViewSet.as_view(), name='self'),
     url(r'^groups/$', views.GroupList.as_view(), name='groups'),
     url(r'^groups/(?P<pk>[0-9]+)/$', group_detail, name='group-details'),
     url(r'^groups/(?P<pk>[0-9]+)/(?P<userid>[0-9]+)/$', membership_delete, name='group-details'),

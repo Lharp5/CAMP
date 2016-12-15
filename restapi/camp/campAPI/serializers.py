@@ -15,6 +15,7 @@ class CampGroupSerializer(serializers.ModelSerializer):
 class MembershipUserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='member.user.first_name')
     last_name = serializers.CharField(source='member.user.last_name')
+    id = serializers.IntegerField(source='member.user.id')
 
     class Meta:
         model = Membership
@@ -22,7 +23,7 @@ class MembershipUserSerializer(serializers.ModelSerializer):
 
 
 class MembershipGroupSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(source='group.id')
+    id = serializers.IntegerField(source='group.id')
     name = serializers.CharField(source='group.name')
 
     class Meta:
@@ -46,6 +47,14 @@ class CampUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CampUser
         fields = ('id', 'first_name', 'last_name', 'username', 'password', 'email', 'role')
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user')
+        # updating the user
+        serializers.ModelSerializer.update(self, instance=instance.user, validated_data=user_data)
+
+        # updating the CampUser
+        return serializers.ModelSerializer.update(self, instance, validated_data)
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')

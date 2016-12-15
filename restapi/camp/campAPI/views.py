@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 
 from rest_framework import viewsets, status
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.reverse import reverse
 from serializers import UserSerializer, CampGroupSerializer, CampUserSerializer, MembershipGroupSerializer, MembershipUserSerializer
 
@@ -12,7 +12,7 @@ import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-
+# Currently not used*3
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -33,7 +33,22 @@ class CampUserViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         groups = Membership.objects.filter(member=instance)
         group_serializer = MembershipGroupSerializer(groups, many=True)
-        return Response({"User": self.get_serializer(instance).data, "groups": group_serializer.data})
+        return Response({"User": self.get_serializer(instance).data, "Groups": group_serializer.data})
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        Membership.objects.filter(member=self.get_object()).delete()
+        return viewsets.ModelViewSet.destroy(self, request, pk, args, kwargs)
+
+
+class SelfViewSet(ListAPIView):
+    serializer_class = CampUserSerializer
+
+    def list(self, request, *args, **kwargs):
+        instance = CampUser.objects.get(user=request.user)
+        groups = Membership.objects.filter(member=instance)
+        instance_serializer = CampUserSerializer(instance)
+        group_serializer = MembershipGroupSerializer(groups, many=True)
+        return Response({"User": instance_serializer.data, "Groups": group_serializer.data})
 
 
 class CamperViewSet(CampUserViewSet):
