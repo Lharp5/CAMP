@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CAMP</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="domain">URL</string>
+    <string name="button_login">Log In</string>
+    <string name="profile_activity_firstname_label"> First name</string>
+    <string name="profile_activity_lastname_label"> Last name</string>
+    <string name="profile_activity_role_label"> Role</string>
+    <string name="group_activity_name_label"> Name</string>
+    <string name="group_activity_desc_label"> Description</string>
+</resources>

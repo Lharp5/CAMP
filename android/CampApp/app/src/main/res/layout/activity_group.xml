@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart= "8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="10dp"
+    tools:context="ca.lukeharper.camp.campapp.GroupActivity">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/group_activity_name_label"
+        android:ems="10"
+        android:id="@+id/nLabel"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="parent"
+        tools:layout_constraintBaseline_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="0dp"
+        android:layout_marginStart="25dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:text="Group's Name"
+        android:textSize="25sp"
+        android:ems="10"
+        android:id="@+id/groupName"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/nLabel"
+        app:layout_constraintTop_toBottomOf="@+id/nLabel"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/nLabel" />
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/group_activity_desc_label"
+        android:ems="10"
+        android:id="@+id/dLabel"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/nLabel"
+        app:layout_constraintTop_toBottomOf="@+id/groupName"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/nLabel" />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="25dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:text="This is a description of the group that would be included here"
+        android:ems="10"
+        android:id="@+id/groupDesc"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/dLabel"
+        app:layout_constraintTop_toBottomOf="@+id/dLabel"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/dLabel" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Members"
+        android:onClick="viewMembers"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/groupDesc"
+        app:layout_constraintTop_toBottomOf="@+id/groupDesc"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/nLabel" />
+
+</android.support.constraint.ConstraintLayout>
