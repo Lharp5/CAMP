@@ -42,7 +42,7 @@ class CampUserViewSet(viewsets.ModelViewSet):
 
 class SelfViewSet(ListAPIView):
     serializer_class = CampUserSerializer
-    permission_classes = (IsAuthenticated, permissions.CampUserPermission,)
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
         instance = CampUser.objects.get(user=request.user)

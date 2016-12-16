@@ -17,9 +17,12 @@ class CampUserPermission(permissions.BasePermission):
         if user.role == CampUser.ADMINISTRATOR:
             return True
 
-        #  If we are a user then continue to the has_object_permission
-        if view.action in ['retrieve', 'put', 'update', 'partial_update', 'patch']:
-            return True
+        try:
+            #  If we are a user then continue to the has_object_permission
+            if view.action in ['retrieve', 'put', 'update', 'partial_update', 'patch']:
+                return True
+        except AttributeError as e:
+            return False
 
         return False
 
