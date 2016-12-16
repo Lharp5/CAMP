@@ -9,7 +9,7 @@ from serializers import UserSerializer, CampGroupSerializer, CampUserSerializer,
 
 from models import CampUser, CampGroup, Membership
 import permissions
-from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 # Currently not used*3
@@ -27,7 +27,7 @@ class CampUserViewSet(viewsets.ModelViewSet):
     """
     queryset = CampUser.objects.all()
     serializer_class = CampUserSerializer
-    permission_classes = (permissions.CampUserPermission,)
+    permission_classes = (IsAuthenticated, permissions.CampUserPermission,)
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         instance = self.get_object()
@@ -42,6 +42,7 @@ class CampUserViewSet(viewsets.ModelViewSet):
 
 class SelfViewSet(ListAPIView):
     serializer_class = CampUserSerializer
+    permission_classes = (IsAuthenticated, permissions.CampUserPermission,)
 
     def list(self, request, *args, **kwargs):
         instance = CampUser.objects.get(user=request.user)
@@ -72,7 +73,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = CampGroup.objects.all()
     serializer_class = CampGroupSerializer
-    permission_classes = (permissions.CampGroupPermission,)
+    permission_classes = (IsAuthenticated, permissions.CampGroupPermission,)
 
     def get_queryset(self):
         return CampGroup.objects.filter(id=self.kwargs['pk'])
@@ -109,7 +110,7 @@ class MembershipViewSet(viewsets.ModelViewSet):
     """
     queryset = Membership.objects.all()
     serializer_class = MembershipUserSerializer
-    permission_classes = (permissions.CampAdminPermissions,)
+    permission_classes = (IsAuthenticated, permissions.CampAdminPermissions,)
 
     def get_object(self):
         group = get_object_or_404(CampGroup.objects.filter(id=self.kwargs['pk']))
@@ -120,4 +121,4 @@ class MembershipViewSet(viewsets.ModelViewSet):
 class GroupList(ListCreateAPIView):
     queryset = CampGroup.objects.all()
     serializer_class = CampGroupSerializer
-    permission_classes = (permissions.CampGroupPermission,)
+    permission_classes = (IsAuthenticated, permissions.CampGroupPermission,)

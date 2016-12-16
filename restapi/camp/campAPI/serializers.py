@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework import exceptions
 
 from models import CampUser, Membership, CampGroup
 
@@ -51,14 +52,20 @@ class CampUserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user')
         # updating the user
-        serializers.ModelSerializer.update(self, instance=instance.user, validated_data=user_data)
-
-        # updating the CampUser
-        return serializers.ModelSerializer.update(self, instance, validated_data)
+        try:
+            serializers.ModelSerializer.update(self, instance=instance.user, validated_data=user_data)
+            # updating the CampUser
+            return serializers.ModelSerializer.update(self, instance, validated_data)
+        except Exception as e:
+            raise exceptions.ValidationError("Bad or Missing User Data")
 
     def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = User.objects.create_user(user_data.pop('username'), user_data.pop('email'), user_data.pop('password'),
+        try:
+            user_data = validated_data.pop('user')
+            user = User.objects.create_user(user_data.pop('username'), user_data.pop('email'), user_data.pop('password'),
                                         **user_data)
-        camp_user = CampUser.objects.create(user=user, **validated_data)
+            camp_user = CampUser.objects.create(user=user, **validated_data)
+        except Exception as e:
+            raise exceptions.ValidationError("Bad or Missing User Data")
+
         return camp_user
